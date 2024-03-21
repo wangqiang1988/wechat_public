@@ -7,6 +7,7 @@ import argparse
 import datetime
 
 def Client():
+    #初始化
     robot = WeRoBot()
     robot.config["APP_ID"] = os.environ.get('run_wechat_app_id')
     robot.config["APP_SECRET"] = os.environ.get('run_wechat_app_secret')
