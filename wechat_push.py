@@ -79,12 +79,22 @@ def get_time():
     current_time = datetime.datetime.now().strftime('%Y%m%d')
     return current_time
 
-
+def publish(token,media_id):
+    headers={'Content-type': 'text/plain; charset=utf-8'}
+    postUrl = "https://api.weixin.qq.com/cgi-bin/freepublish/submit?access_token=%s" % token['access_token']
+    articles = {
+        'media_id':media_id,
+    }
+    datas = json.dumps(articles, ensure_ascii=False).encode('utf-8')
+    r = requests.post(postUrl, data=datas, headers=headers)
+    resp = json.loads(r.text)
+    return resp
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("wechat_title", help="公众号标题")
     parser.add_argument("wechat_disgest", help="文章简介")
+    parser.add_argument("publish", help="是否发布,yes/no")
     options = parser.parse_args()
     client, token = Client()
     current_time = get_time()
@@ -92,4 +102,7 @@ if __name__ == '__main__':
     img_content = getBingImg()[0]['copyright']
     media_id, media_url = upload_img(img_url)
     news_id = upload_wechat_news( current_time + options.wechat_title,media_id,options.wechat_disgest,media_url,img_content,token)
-    #publish(token,news_id['media_id']) #发布
+    if options.publish == 'yes':
+        publish(token,news_id['media_id']) #发布
+    else:
+        pass
