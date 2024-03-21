@@ -49,7 +49,7 @@ def upload_img(img_url):
     print('upload_success')
     return media_id ,media_url
 
-def upload_wechat_news(token,content,media_url,media_content,thumb,title,disgest):
+def upload_wechat_news(title,media_id,disgest,media_url,media_content,token):
     #上传到草稿未发表
     AUTHOR = '王同学'
     articles = {
@@ -57,18 +57,17 @@ def upload_wechat_news(token,content,media_url,media_content,thumb,title,disgest
         [   
             {   
                 "title": title,
-                "thumb_media_id": thumb,
+                "thumb_media_id": media_id,
                 "author": AUTHOR,
                 "digest": disgest,
                 "show_cover_pic": 0,
-                "content": content + '<br>'+"<img src='%s'"%media_url+"/>" +'<br>' + '<p>'+ media_content +'</p>'+ '<br>',
+                "content": "<img src='%s'"%media_url+"/>" +'<br>' + '<p>'+ media_content +'</p>'+ '<br>',
                 "need_open_comment":1,
             }
             # 若新增的是多图文素材，则此处应有几段articles结构，最多8段
         ]
     }
-
-    print(content + '<br>'+"<img src='%s'"%media_url+"/>" +'<br>' + media_content + '<br>')
+    
     headers={'Content-type': 'text/plain; charset=utf-8'}
     datas = json.dumps(articles, ensure_ascii=False).encode('utf-8')
     postUrl = "https://api.weixin.qq.com/cgi-bin/draft/add?access_token=%s" % token['access_token']
@@ -77,13 +76,13 @@ def upload_wechat_news(token,content,media_url,media_content,thumb,title,disgest
     return resp
 
 def get_time():
-    current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    current_time = datetime.datetime.now().strftime('%Y%m%d')
     return current_time
+
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument("wechat_content", help="公众号内容")
     parser.add_argument("wechat_title", help="公众号标题")
     parser.add_argument("wechat_disgest", help="文章简介")
     options = parser.parse_args()
@@ -92,5 +91,5 @@ if __name__ == '__main__':
     img_url = getBingImg()[0]['url']
     img_content = getBingImg()[0]['copyright']
     media_id, media_url = upload_img(img_url)
-    news_id = upload_wechat_news(token,current_time + '<br>'+ options.wechat_content,media_url,img_content,media_id,options.wechat_title,options.wechat_disgest)
+    news_id = upload_wechat_news( options.wechat_title,media_id,options.wechat_disgest,media_url,img_content,token)
     #publish(token,news_id['media_id']) #发布
