@@ -9,8 +9,8 @@ def get_token():
 }
     params = (
     ('grant_type', 'client_credential'),
-    ('appid', os.environ.get('wechat_app_id')),
-    ('secret', os.environ.get('wechat_app_secret')),
+    ('appid', os.environ.get('run_wechat_app_id')),
+    ('secret', os.environ.get('run_wechat_app_secret')),
 )
     response = requests.get('https://api.weixin.qq.com/cgi-bin/token', headers=headers, params=params)
     return response.json()['access_token']
