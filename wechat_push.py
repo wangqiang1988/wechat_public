@@ -91,5 +91,5 @@ if __name__ == '__main__':
     img_url = getBingImg()[0]['url']
     img_content = getBingImg()[0]['copyright']
     media_id, media_url = upload_img(img_url)
-    news_id = upload_wechat_news( options.wechat_title,media_id,options.wechat_disgest,media_url,img_content,token)
+    news_id = upload_wechat_news( current_time + options.wechat_title,media_id,options.wechat_disgest,media_url,img_content,token)
     #publish(token,news_id['media_id']) #发布
