@@ -63,7 +63,7 @@ def upload_wechat_news(title,media_id,disgest,media_url,media_content,token):
                 "digest": disgest,
                 "show_cover_pic": 0,
                 "content": "<img src='%s'"%media_url+"/>" +'<br>' + '<p>'+ media_content +'</p>'+ '<br>',
-                "need_open_comment":1,
+                "need_open_comment":0,
             }
             # 若新增的是多图文素材，则此处应有几段articles结构，最多8段
         ]
