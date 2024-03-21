@@ -28,7 +28,7 @@ def delete_image():
     data = { "type":'image', "offset":'0', "count":'20' }
     response = requests.post('https://api.weixin.qq.com/cgi-bin/material/batchget_material', headers=headers, params=params, json=data)
     response_all_image = requests.get('https://api.weixin.qq.com/cgi-bin/material/get_materialcount', headers=headers, params=params)
-    print(response_all_image.json(),'总素材数')
+    print('总素材数:',response_all_image.json())
     for media_id in response.json()['item']:
         print(media_id['name'])
         data = { 'media_id':media_id['media_id']}
