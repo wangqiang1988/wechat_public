@@ -91,13 +91,12 @@ def publish(token,media_id):
     resp = json.loads(r.text)
     return resp
 
-if __name__ == '__main__':
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("wechat_title", help="公众号标题")
     parser.add_argument("wechat_disgest", help="文章简介")
     parser.add_argument("publish", help="是否发布,yes/no")
     options = parser.parse_args()
-    client, token = Client()
     current_time = get_time()
     img_url = getBingImg()[0]['url']
     img_content = getBingImg()[0]['copyright']
@@ -107,3 +106,7 @@ if __name__ == '__main__':
         publish(token,news_id['media_id']) #发布
     else:
         pass
+
+if __name__ == '__main__':
+    client, token = Client()
+    main()
