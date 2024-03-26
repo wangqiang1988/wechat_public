@@ -47,7 +47,7 @@ def search_tmdb(type,name):
                 i = 0
                 imgurl = poster_path_list[0]
                 content = content_list[0]
-    
+            tmdbid = res.id
     
     elif type == '电视剧':
         show = tv.search(name)
@@ -73,15 +73,23 @@ def search_tmdb(type,name):
                 i = 0 
                 imgurl = poster_path_list[0]
                 content = content_list[0]
+            tmdbid = result.id
     else:
         '没有搜索到'
-    return imgurl,content
+    return imgurl,content,tmdbid
 
 
 def down_img(img_url):
     response_img = requests.get(img_url)
     with open('tmdb_img.jpg', 'wb') as f:
         f.write(response_img.content)
+
+def down_dropback_img(dropback_url):
+    for i in dropback_url:
+        response_img = requests.get(i)
+        with open(str(i.split('/')[-1]), 'wb') as f:
+            f.write(response_img.content)
+
 
 def upload_image():
     #上传图片到公众号素材库
@@ -90,6 +98,16 @@ def upload_image():
     media_url = media_json['url']
     print('upload_success')
     return media_id ,media_url
+
+def upload_dropback_image(dropback_url):
+    #上传图片到公众号素材库
+    media_url_list=[]
+    for i in dropback_url:
+        media_json = client.upload_permanent_media("image",open(str(i).split('/')[-1], "rb")) ##永久素材
+        media_url = media_json['url']
+        print('upload_success')
+        media_url_list.append(media_url)
+    return media_url_list
 
 def upload_wechat_news(token,content,thumb,title):
     #上传到草稿未发表
@@ -118,6 +136,28 @@ def upload_wechat_news(token,content,thumb,title):
     resp = json.loads(r.text)
     return resp
 
+
+def down_dropback(type,id):
+    dropback_list=[]
+    headers = {
+    'User-Agent': 'Apipost client Runtime/+https://www.apipost.cn/',
+    'Content-Type': 'application/json',
+}
+
+    params = (
+    ('api_key', tmdb.api_key),
+)
+    if '电影' == type:
+        type = 'movie'
+    else:
+        type = 'tv'
+    response = requests.get('https://api.themoviedb.org/3/%s/%s/images'%(type,id), headers=headers, params=params)
+    response = json.loads(response.text)
+    for i in response['backdrops']:
+        url = 'https://image.tmdb.org/t/p/original'+i['file_path']
+        dropback_list.append(url)
+    return dropback_list
+
 def publish(token,media_id):
     headers={'Content-type': 'text/plain; charset=utf-8'}
     postUrl = "https://api.weixin.qq.com/cgi-bin/freepublish/submit?access_token=%s" % token['access_token']
@@ -130,6 +170,7 @@ def publish(token,media_id):
     return resp
 
 
+
 if __name__ =='__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("title", help="名称")
@@ -139,13 +180,21 @@ if __name__ =='__main__':
     title = options.title
     type = options.type
     client, token = Client()
-    imgurl,content = search_tmdb(type,title)
+    dropback_content=""
+    imgurl,content,tmdb_id = search_tmdb(type,title)
     down_img(imgurl)
     filename = imgurl.split('/')[-1]
     media_id ,media_url = upload_image()
-    wechat_content ='名称:'+ title + '<br>'+"<img src='%s'"%str(media_url)+ "/>" +'<br>' + content + '<br>'
+    dropback_url = down_dropback(type,tmdb_id)
+    down_dropback_img(dropback_url)
+    dropback_wechat_urllist= upload_dropback_image(dropback_url)
+    print(dropback_wechat_urllist)
+    for i in dropback_wechat_urllist:
+        dropback_content += "<img src='%s'"%str(i)+ "/>" +'<br><br>'
+    wechat_content ='名称:'+ title + '<br>'+"<img src='%s'"%str(media_url)+ "/>" +'<br>' + content + '<br>' + 'tmdb剧照:'+ dropback_content
     news_id = upload_wechat_news(token,wechat_content,media_id,title)
     if options.publish == 'yes':
         publish(token,news_id['media_id'])
     else:
         pass
+    os.system('rm *.jpg')
