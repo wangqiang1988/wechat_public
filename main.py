@@ -40,11 +40,11 @@ def getBingImg():
     except:
         return False
  
-def upload_img():
+def upload_img(image):
     #response_img = requests.get(img_url)
    # with open('./output/0.jpeg', 'wb') as f:
     #    f.write(response_img.content)
-    media_json = client.upload_permanent_media("image",open('/home/ubuntu/github/wechat_public/output/0.jpeg', "rb")) ##永久素材
+    media_json = client.upload_permanent_media("image",open('/home/ubuntu/github/wechat_public/output/%s'%image, "rb")) ##永久素材
     media_id = media_json['media_id']
     media_url = media_json['url']
     print('upload_success')
@@ -101,7 +101,10 @@ def main():
     #img_url = getBingImg()[0]['url']
     #img_content = getBingImg()[0]['copyright']
     res = plog.make_pic_and_save(options.wechat_title)
-    media_id, media_url = upload_img()
+    try:
+        media_id, media_url = upload_img('0.jpeg')
+    except:
+        media_id, media_url = upload_img('1.jpeg')
     news_id = upload_wechat_news( current_time + '-'+ options.wechat_title,media_id,options.wechat_disgest,media_url,'from_bing',token)
     if options.publish == 'yes':
         publish(token,news_id['media_id']) #发布
