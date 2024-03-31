@@ -112,4 +112,4 @@ def main():
 if __name__ == '__main__':
     client, token = Client()
     main()
-    os.system('rm output -rf')
+    os.system('rm /home/ubuntu/github/wechat_public/output -rf')

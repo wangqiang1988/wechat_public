@@ -12,7 +12,7 @@ def make_pic_and_save(sentence):
         # for bing image when dall-e3 open drop this function
         i = ImageGen(bing_cookie,bing_user)
         images = i.get_images(sentence)
-        new_path = os.path.join("./", 'output')
+        new_path = os.path.join("/home/ubuntu/github/wechat_public", 'output')
         if not os.path.exists(new_path):
             os.mkdir(new_path)
         i.save_images(images, new_path)
