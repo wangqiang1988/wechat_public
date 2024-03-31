@@ -15,6 +15,11 @@ def Client():
     token = client.grant_token()
     return client, token
 
+def file_is_larger_than_10k(file_path):
+    file_size = os.path.getsize(file_path)
+    return file_size > 10240
+
+
 def getBingImg():
     try:
         headers = {
@@ -49,6 +54,28 @@ def upload_img(image):
     media_url = media_json['url']
     print('upload_success')
     return media_id ,media_url
+
+def upload_imagelist():
+    """
+    上传到微信公众号素材
+    """
+    media_url_p = []
+    media_id_p = []
+    for filename in sorted(os.listdir('/home/ubuntu/github/wechat_public/output'),reverse=True):
+        if any(filename.endswith(extension) for extension in ['.jpg', '.jpeg', '.png', '.bmp']):
+            if file_is_larger_than_10k(filename):
+                media_json_p = client.upload_permanent_media("image",open('/home/ubuntu/github/wechat_public/output' + '/'+  str(filename), "rb")) ##永久素材
+                media_id_p.append(media_json_p['media_id'])
+                media_url_p.append(media_json_p['url'])
+            else:
+                pass
+            
+    THUMB_MEDIA_ID_p = media_id_p[0]
+    RESULT_p = ''
+    for img in media_url_p:
+        RESULT_p += "<img src='%s'"%str(img)+ "/>" +'<br><br>' 
+    return THUMB_MEDIA_ID_p,RESULT_p
+
 
 def upload_wechat_news(title,media_id,disgest,media_url,media_content,token):
     #上传到草稿未发表
@@ -102,9 +129,9 @@ def main():
     #img_content = getBingImg()[0]['copyright']
     res = plog.make_pic_and_save(options.wechat_title)
     try:
-        media_id, media_url = upload_img('0.jpeg')
+        media_id, media_url = upload_imagelist()
     except:
-        media_id, media_url = upload_img('1.jpeg')
+        print('upload error')
     news_id = upload_wechat_news( current_time + '-'+ options.wechat_title,media_id,options.wechat_disgest,media_url,'image_from_bing',token)
     if options.publish == 'yes':
         publish(token,news_id['media_id']) #发布
