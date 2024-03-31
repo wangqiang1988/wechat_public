@@ -67,6 +67,7 @@ def upload_imagelist():
                 media_json_p = client.upload_permanent_media("image",open('/home/ubuntu/github/wechat_public/output' + '/'+  str(filename), "rb")) ##永久素材
                 media_id_p.append(media_json_p['media_id'])
                 media_url_p.append(media_json_p['url'])
+                print('upload ',filename)
             else:
                 pass
             
@@ -74,6 +75,7 @@ def upload_imagelist():
     RESULT_p = ''
     for img in media_url_p:
         RESULT_p += "<img src='%s'"%str(img)+ "/>" +'<br><br>' 
+    print(THUMB_MEDIA_ID_p)
     return THUMB_MEDIA_ID_p,RESULT_p
 
 
@@ -130,8 +132,8 @@ def main():
     res = plog.make_pic_and_save(options.wechat_title)
     try:
         media_id, media_url = upload_imagelist()
-    except:
-        print('upload error')
+    except as Exception e:
+        print(e)
     news_id = upload_wechat_news( current_time + '-'+ options.wechat_title,media_id,options.wechat_disgest,media_url,'image_from_bing',token)
     if options.publish == 'yes':
         publish(token,news_id['media_id']) #发布
