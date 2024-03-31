@@ -63,6 +63,7 @@ def upload_imagelist():
     media_id_p = []
     for filename in sorted(os.listdir('/home/ubuntu/github/wechat_public/output'),reverse=True):
         if any(filename.endswith(extension) for extension in ['.jpg', '.jpeg', '.png', '.bmp']):
+            print(filename)
             if file_is_larger_than_10k(filename):
                 media_json_p = client.upload_permanent_media("image",open('/home/ubuntu/github/wechat_public/output' + '/'+  str(filename), "rb")) ##永久素材
                 media_id_p.append(media_json_p['media_id'])
