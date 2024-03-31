@@ -61,16 +61,14 @@ def upload_imagelist():
     """
     media_url_p = []
     media_id_p = []
-    for filename in sorted(os.listdir('/home/ubuntu/github/wechat_public/output'),reverse=True):
-        if any(filename.endswith(extension) for extension in ['.jpg', '.jpeg', '.png', '.bmp']):
-            print(filename)
-            if file_is_larger_than_10k(filename):
-                media_json_p = client.upload_permanent_media("image",open('/home/ubuntu/github/wechat_public/output' + '/'+  str(filename), "rb")) ##永久素材
-                media_id_p.append(media_json_p['media_id'])
-                media_url_p.append(media_json_p['url'])
-                print('upload ',filename)
-            else:
-                pass
+    for filename in sorted(os.listdir('/home/ubuntu/github/wechat_public/output')):
+        if file_is_larger_than_10k(filename):
+            media_json_p = client.upload_permanent_media("image",open('/home/ubuntu/github/wechat_public/output' + '/'+  str(filename), "rb")) ##永久素材
+            media_id_p.append(media_json_p['media_id'])
+            media_url_p.append(media_json_p['url'])
+            print('upload ',filename)
+        else:
+            pass
             
     THUMB_MEDIA_ID_p = media_id_p[0]
     RESULT_p = ''
