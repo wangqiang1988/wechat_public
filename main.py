@@ -5,7 +5,7 @@ import requests
 import os
 import argparse
 import datetime
-
+import plog
 def Client():
     #初始化
     robot = WeRoBot()
@@ -100,6 +100,7 @@ def main():
     current_time = get_time()
     img_url = getBingImg()[0]['url']
     img_content = getBingImg()[0]['copyright']
+    plog.make_pic_and_save(options.wechat_title)
     media_id, media_url = upload_img(img_url)
     news_id = upload_wechat_news( current_time + options.wechat_title,media_id,options.wechat_disgest,media_url,img_content,token)
     if options.publish == 'yes':
