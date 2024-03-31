@@ -100,9 +100,10 @@ def main():
     current_time = get_time()
     #img_url = getBingImg()[0]['url']
     #img_content = getBingImg()[0]['copyright']
-    plog.make_pic_and_save(options.wechat_title)
+    res = plog.make_pic_and_save(options.wechat_title)
+    print(res)
     media_id, media_url = upload_img()
-    news_id = upload_wechat_news( current_time + options.wechat_title,media_id,options.wechat_disgest,media_url,img_content,token)
+    news_id = upload_wechat_news( current_time + options.wechat_title,media_id,options.wechat_disgest,media_url,'from_bing',token)
     if options.publish == 'yes':
         publish(token,news_id['media_id']) #发布
     else:
