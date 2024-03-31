@@ -44,7 +44,7 @@ def upload_img():
     #response_img = requests.get(img_url)
    # with open('./output/0.jpeg', 'wb') as f:
     #    f.write(response_img.content)
-    media_json = client.upload_permanent_media("image",open('0.jpeg', "rb")) ##永久素材
+    media_json = client.upload_permanent_media("image",open('./output/0.jpeg', "rb")) ##永久素材
     media_id = media_json['media_id']
     media_url = media_json['url']
     print('upload_success')
