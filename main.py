@@ -40,7 +40,7 @@ def getBingImg():
     except:
         return False
  
-def upload_img(img_url):
+def upload_img():
     #response_img = requests.get(img_url)
    # with open('./output/0.jpeg', 'wb') as f:
     #    f.write(response_img.content)
@@ -98,10 +98,10 @@ def main():
     parser.add_argument("publish", help="是否发布,yes/no")
     options = parser.parse_args()
     current_time = get_time()
-    img_url = getBingImg()[0]['url']
-    img_content = getBingImg()[0]['copyright']
+    #img_url = getBingImg()[0]['url']
+    #img_content = getBingImg()[0]['copyright']
     plog.make_pic_and_save(options.wechat_title)
-    media_id, media_url = upload_img(img_url)
+    media_id, media_url = upload_img()
     news_id = upload_wechat_news( current_time + options.wechat_title,media_id,options.wechat_disgest,media_url,img_content,token)
     if options.publish == 'yes':
         publish(token,news_id['media_id']) #发布
