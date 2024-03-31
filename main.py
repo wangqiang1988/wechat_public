@@ -76,6 +76,7 @@ def upload_imagelist():
     for img in media_url_p:
         RESULT_p += "<img src='%s'"%str(img)+ "/>" +'<br><br>' 
     print(THUMB_MEDIA_ID_p)
+    print(RESULT_p)
     return THUMB_MEDIA_ID_p,RESULT_p
 
 
@@ -129,9 +130,9 @@ def main():
     current_time = get_time()
     res = plog.make_pic_and_save(options.wechat_title)
     try:
-        thum_id, media_url = upload_img('0.jpeg')
+        thum_id, media_url = upload_imagelist()
     except:
-        thum_id, media_url = upload_img('1.jpeg')
+        thum_id, media_url = upload_imagelist()
     news_id = upload_wechat_news( current_time + '-'+ options.wechat_title,thum_id,options.wechat_disgest,media_url,'image_from_bing',token)
     if options.publish == 'yes':
         publish(token,news_id['media_id']) #发布
