@@ -127,10 +127,11 @@ def main():
     parser.add_argument("publish", help="是否发布,yes/no")
     options = parser.parse_args()
     current_time = get_time()
-    #img_url = getBingImg()[0]['url']
-    #img_content = getBingImg()[0]['copyright']
     res = plog.make_pic_and_save(options.wechat_title)
-    thum_id, media_url = upload_imagelist()
+    try:
+        thum_id, media_url = upload_img('0.jpeg')
+    except:
+        thum_id, media_url = upload_img('1.jpeg')
     news_id = upload_wechat_news( current_time + '-'+ options.wechat_title,thum_id,options.wechat_disgest,media_url,'image_from_bing',token)
     if options.publish == 'yes':
         publish(token,news_id['media_id']) #发布
