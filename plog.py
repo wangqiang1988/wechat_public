@@ -7,6 +7,7 @@ from BingImageCreator import ImageGen
 bing_cookie = os.environ.get('bing_cookie')
 def make_pic_and_save(sentence):
     try:
+        print(bing_cookie)
         # for bing image when dall-e3 open drop this function
         i = ImageGen(bing_cookie,bing_cookie)
         images = i.get_images(sentence)
