@@ -9,8 +9,8 @@ import plog
 def Client():
     #初始化
     robot = WeRoBot()
-    robot.config["APP_ID"] = os.environ.get('wechat_app_id')
-    robot.config["APP_SECRET"] = os.environ.get('wechat_app_secret')
+    robot.config["APP_ID"] = os.environ.get('plog_wechat_app_id')
+    robot.config["APP_SECRET"] = os.environ.get('plog_wechat_app_secret')
     client = robot.client
     token = client.grant_token()
     return client, token
