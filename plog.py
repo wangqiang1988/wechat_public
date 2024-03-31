@@ -17,7 +17,7 @@ def make_pic_and_save(sentence):
             os.mkdir(new_path)
         i.save_images(images, new_path)
         return True
-    except:
-        return 'error'
+    except Exception as e:
+        return e
 if __name__ =='__main__':
     make_pic_and_save('跑步的人越来越多')
