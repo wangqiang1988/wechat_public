@@ -112,3 +112,4 @@ def main():
 if __name__ == '__main__':
     client, token = Client()
     main()
+    os.system('rm ./output -rf')
