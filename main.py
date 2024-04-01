@@ -73,11 +73,11 @@ def upload_imagelist():
     THUMB_MEDIA_ID_p = media_id_p[0]
     RESULT_p = ''
     for img in media_url_p:
-        RESULT_p += "<img src='%s'"%str(img)+ "/>" +'<br><br>' 
+        RESULT_p += "<img src='%s'"%str(img)+ "/>" +'<br>' 
     return THUMB_MEDIA_ID_p,RESULT_p
 
 
-def upload_wechat_news(title,media_id,disgest,media_url,media_content,token):
+def upload_wechat_news(title,media_id,disgest,media_url,token):
     #上传到草稿未发表
     AUTHOR = '王同学'
     articles = {
@@ -90,7 +90,7 @@ def upload_wechat_news(title,media_id,disgest,media_url,media_content,token):
                 "digest": disgest,
                 "show_cover_pic": 0,
             #    "content": "<img src='%s'"%media_url+"/>" +'<br>' + '<p>'+ media_content +'</p>'+ '<br>',
-                "content": media_url + '<p>'+ media_content +'</p>'+ '<br>',
+                "content": media_url ,
                 "need_open_comment":0,
             }
             # 若新增的是多图文素材，则此处应有几段articles结构，最多8段
@@ -131,7 +131,7 @@ def main():
         thum_id, media_url = upload_imagelist()
     except:
         thum_id, media_url = upload_imagelist()
-    news_id = upload_wechat_news( current_time + '-'+ options.wechat_title,thum_id,options.wechat_disgest,media_url,"<br>",token)
+    news_id = upload_wechat_news( current_time + '-'+ options.wechat_title,thum_id,options.wechat_disgest,media_url,token)
     if options.publish == 'yes':
         publish(token,news_id['media_id']) #发布
     else:
