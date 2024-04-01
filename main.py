@@ -73,7 +73,7 @@ def upload_imagelist():
     THUMB_MEDIA_ID_p = media_id_p[0]
     RESULT_p = ''
     for img in media_url_p:
-        RESULT_p += "<img src='%s'"%str(img)+ "/>" +'<br>' 
+        RESULT_p += "<img src='%s'"%str(img)+ "/>" +'<br><br>' 
     return THUMB_MEDIA_ID_p,RESULT_p
 
 
