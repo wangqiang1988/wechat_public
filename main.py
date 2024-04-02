@@ -121,12 +121,13 @@ def publish(token,media_id):
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument("bing_cookie",help="bing_cookie")
     parser.add_argument("wechat_title", help="公众号标题")
     parser.add_argument("wechat_disgest", help="文章简介")
     parser.add_argument("publish", help="是否发布,yes/no")
     options = parser.parse_args()
     current_time = get_time()
-    res = plog.make_pic_and_save(options.wechat_title)
+    res = plog.make_pic_and_save(options.bing_cookie,options.wechat_title)
     try:
         thum_id, media_url = upload_imagelist()
     except:
