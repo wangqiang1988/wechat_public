@@ -4,9 +4,7 @@ from BingImageCreator import ImageGen
 
 
 
-bing_cookie = os.environ.get('bing_cookie')
-
-def make_pic_and_save(sentence):
+def make_pic_and_save(bing_cookie,sentence):
     try:
         i = ImageGen(bing_cookie)
         print(bing_cookie)
