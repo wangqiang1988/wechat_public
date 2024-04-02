@@ -1,7 +1,6 @@
 import requests 
 import json  
 from werobot import WeRoBot
-import requests
 import os
 import argparse
 import datetime
@@ -19,7 +18,20 @@ def Client():
 def file_is_larger_than_10k(file_path):
     file_size = os.path.getsize(file_path)
     return file_size > 10240
+def freechat(prompt):
+    headers = {
+    'User-Agent': 'Apipost client Runtime/+https://www.apipost.cn/',
+    'Authorization': 'Bearer %s'%os.environ.get('gpt_free_api'),
+    'Content-Type': 'application/json',
+    }
 
+    data = json.dumps({
+        "model": "gpt-3.5-turbo",
+        "messages": [{"role": "user", "content": f"revise `{prompt}` to a DALL-E prompt"}]
+    })
+    response = requests.post('https://api.chatanywhere.com.cn/v1/chat/completions', headers=headers, data=data) 
+    dalle_prompt = json.loads(response.text)['choices'][0]['message']['content']
+    return dalle_prompt
 
 def getBingImg():
     try:
@@ -128,7 +140,8 @@ def main():
     options = parser.parse_args()
     current_time = get_time()
     bing_cookie = env.bing_cookie()
-    res = plog.make_pic_and_save(bing_cookie,options.wechat_title)
+    dalle_prompt = freechat(options.wechat_title)
+    res = plog.make_pic_and_save(bing_cookie,dalle_prompt)
     try:
         thum_id, media_url = upload_imagelist()
     except:
