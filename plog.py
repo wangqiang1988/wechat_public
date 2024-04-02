@@ -1,6 +1,6 @@
 import argparse
 import os
-from ./BingImageCreator import ImageGen
+from .BingImageCreator import ImageGen
 
 
 
