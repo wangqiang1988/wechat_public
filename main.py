@@ -166,4 +166,4 @@ if __name__ == '__main__':
     main()
     client, token = Client_m()
     main()
-    os.system('mv /home/ubuntu/github/wechat_public/output /home/ubuntu/github/wechat_public/%s'%current_time)
+    os.system('mv /home/ubuntu/github/wechat_public/output /home/ubuntu/github/wechat_public/2024/%s'%current_time)
