@@ -15,6 +15,15 @@ def Client():
     token = client.grant_token()
     return client, token
 
+def Client_m():
+    #初始化
+    robot = WeRoBot()
+    robot.config["APP_ID"] = os.environ.get('wechat_app_id')
+    robot.config["APP_SECRET"] = os.environ.get('wechat_app_secret')
+    client = robot.client
+    token = client.grant_token()
+    return client, token
+
 def file_is_larger_than_10k(file_path):
     file_size = os.path.getsize(file_path)
     return file_size > 10240
@@ -154,5 +163,7 @@ def main():
 
 if __name__ == '__main__':
     client, token = Client()
+    main()
+    client, token = Client_m()
     main()
     os.system('rm /home/ubuntu/github/wechat_public/output -rf')
