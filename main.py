@@ -149,11 +149,11 @@ def main():
     options = parser.parse_args()
     bing_cookie = env.bing_cookie()
     dalle_prompt = freechat(options.wechat_title)
-    res = plog.make_pic_and_save(bing_cookie,dalle_prompt)
+    plog.make_pic_and_save(bing_cookie,dalle_prompt)
     try:
         thum_id, media_url = upload_imagelist()
     except:
-        thum_id, media_url = upload_imagelist()
+        print('error')
     news_id = upload_wechat_news( current_time + '-'+ options.wechat_title,thum_id,options.wechat_disgest,media_url,token)
     if options.publish == 'yes':
         publish(token,news_id['media_id']) #发布
@@ -163,7 +163,5 @@ def main():
 if __name__ == '__main__':
     current_time = get_time()
     client, token = Client()
-    main()
-    client, token = Client_m()
     main()
     os.system('mv /home/ubuntu/github/wechat_public/output /home/ubuntu/github/wechat_public/2024/%s'%current_time)
