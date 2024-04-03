@@ -147,7 +147,6 @@ def main():
     parser.add_argument("wechat_disgest", help="文章简介")
     parser.add_argument("publish", help="是否发布,yes/no")
     options = parser.parse_args()
-    current_time = get_time()
     bing_cookie = env.bing_cookie()
     dalle_prompt = freechat(options.wechat_title)
     res = plog.make_pic_and_save(bing_cookie,dalle_prompt)
@@ -162,8 +161,9 @@ def main():
         pass
 
 if __name__ == '__main__':
+    current_time = get_time()
     client, token = Client()
     main()
     client, token = Client_m()
     main()
-    os.system('rm /home/ubuntu/github/wechat_public/output -rf')
+    os.system('mv /home/ubuntu/github/wechat_public/output /home/ubuntu/github/wechat_public/%s'%current_time)
