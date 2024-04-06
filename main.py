@@ -165,4 +165,4 @@ if __name__ == '__main__':
     current_time = get_time()
     client, token = Client()
     title = main()
-    os.system('mv /home/ubuntu/github/wechat_public/output /home/ubuntu/github/wechat_public/2024/%s_%s'%(current_time,title))
+    os.system('mkdir /home/ubuntu/github/wechat_public/2024/%s_%s && mv /home/ubuntu/github/wechat_public/output /home/ubuntu/github/wechat_public/2024/%s_%s'%(current_time,title,current_time,title))
